@@ -1,0 +1,15 @@
+<div class="modal-default"
+     [ngClass]="classes"
+     *modalView="modalView"
+     [@showHideModal]="options"
+     (@showHideModal.done)="handleDoneAnimation()"
+     (@showHideModal.start)="handleStartAnimation()">
+  <div class="modal-default__inner modal-content" [ngClass]="classes && classes + '__inner'">
+    <button type="button" class="modal-default__inner-close" (click)="close()"></button>
+    <div class="modal-default__inner-title" [ngClass]="classes && classes + '__title'">
+      <ng-content select=".title"></ng-content>
+    </div>
+
+    <ng-content select=".content"></ng-content>
+  </div>
+</div>

@@ -15,6 +15,7 @@ import {BrowserModule} from "@angular/platform-browser";
   ],
   exports: [
     ModalComponent,
+    ModalViewDirective,
   ]
 })
 export class ModalsModule {

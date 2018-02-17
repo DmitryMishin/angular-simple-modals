@@ -1,7 +1,7 @@
 import {Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewContainerRef} from '@angular/core';
 
 @Directive({
-  selector: '[modalView]'
+  selector: '[modalView]',
 })
 export class ModalViewDirective implements OnInit, OnDestroy {
   private element;
@@ -24,8 +24,10 @@ export class ModalViewDirective implements OnInit, OnDestroy {
   }
 
   @Input() set modalView(condition: boolean) {
-    condition
-      ? this.viewContainer.createEmbeddedView(this.templateRef)
-      : this.viewContainer.clear();
+    if (condition) {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+    } else {
+      this.viewContainer.clear();
+    }
   }
 }

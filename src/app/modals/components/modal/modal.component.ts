@@ -1,5 +1,6 @@
 import {
-  Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, ViewEncapsulation
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit,
+  ViewEncapsulation
 } from '@angular/core';
 import {ModalsService} from "../../service/modals.service";
 import {ModalModel} from "../../models/modal.model";
@@ -20,8 +21,14 @@ import {ModalEventModel} from "../../models/modal-event.model";
     ])
   ]
 })
-export class ModalComponent implements OnInit, ModalModel, OnDestroy {
+export class ModalComponent implements OnInit, ModalModel, OnDestroy, AfterViewInit {
   public readonly onAnimation$: EventEmitter<ModalEventModel> = new EventEmitter();
+
+  private clickListener = (event) => {
+    if (!event.target.closest('.modal-content')) {
+      this.close();
+    }
+  };
 
   @Input() id: string;
 
@@ -47,11 +54,12 @@ export class ModalComponent implements OnInit, ModalModel, OnDestroy {
     }
   };
 
-  private element;
   public modalView = false;
 
-  constructor(element: ElementRef,
-              private modalsService: ModalsService) {
+  protected element;
+  protected contentElement;
+
+  constructor(protected modalsService: ModalsService, element: ElementRef) {
     this.element = element.nativeElement;
   }
 
@@ -73,11 +81,20 @@ export class ModalComponent implements OnInit, ModalModel, OnDestroy {
     this.modalsService.remove(this);
   }
 
+  ngAfterViewInit() {
+  }
+
   public close() {
     this.modalView = false;
+
+    document.removeEventListener('click', this.clickListener);
   }
 
   public open() {
     this.modalView = true;
+
+    setTimeout(() => {
+      document.addEventListener('click', this.clickListener);
+    });
   }
 }
