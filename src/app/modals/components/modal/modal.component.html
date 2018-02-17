@@ -1,0 +1,6 @@
+<div class="modal" *modalView="modalView"
+     [@showHideModal]="options"
+     (@showHideModal.done)="handleDoneAnimation()"
+     (@showHideModal.start)="handleStartAnimation()">
+  <ng-content></ng-content>
+</div>
