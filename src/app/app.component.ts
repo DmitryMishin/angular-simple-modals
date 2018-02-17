@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ModalsService} from "./modals/service/modals.service";
+import {ModalsService} from "./modules/modals/service/modals.service";
 
 @Component({
   selector: 'app-root',

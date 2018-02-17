@@ -3,8 +3,8 @@ import {NgModule} from '@angular/core';
 
 
 import {AppComponent} from './app.component';
-import {ModalsModule} from "./modals/modals.module";
-import {ModalsService} from "./modals/service/modals.service";
+import {ModalsModule} from "./modules/modals/modals.module";
+import {ModalsService} from "./modules/modals/service/modals.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {RouterModule} from "@angular/router";
 import {ModalDefaultComponent} from './components/modals/modal-default/modal-default.component';

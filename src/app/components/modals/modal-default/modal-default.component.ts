@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, ViewEncapsulation} from '@angular/core';
-import {ModalComponent} from "../../../modals/components/modal/modal.component";
-import {ModalsService} from "../../../modals/service/modals.service";
+import {ModalComponent} from "../../../modules/modals/components/modal/modal.component";
+import {ModalsService} from "../../../modules/modals/service/modals.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
