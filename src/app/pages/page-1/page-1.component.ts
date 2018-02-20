@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {ModalsService} from "../../modules/modals/service/modals.service";
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ModalsService} from '../../modules/modals/service/modals.service';
 
 @Component({
   selector: 'app-page-1',
@@ -7,7 +7,7 @@ import {ModalsService} from "../../modules/modals/service/modals.service";
   styleUrls: ['./page-1.component.styl'],
   encapsulation: ViewEncapsulation.None,
 })
-export class Page1Component implements OnInit {
+export class Page1Component implements OnInit, OnDestroy {
   private subscriber;
 
   constructor(private m: ModalsService) {

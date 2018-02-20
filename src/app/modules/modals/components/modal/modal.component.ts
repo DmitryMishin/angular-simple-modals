@@ -1,11 +1,11 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit,
+  AfterViewInit, Component, ElementRef, EventEmitter, Injector, Input, OnDestroy, OnInit, Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import {ModalsService} from "../../service/modals.service";
-import {ModalModel} from "../../models/modal.model";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {ModalEventModel} from "../../models/modal-event.model";
+import {ModalsService} from '../../service/modals.service';
+import {ModalModel} from '../../models/modal.model';
+import {ModalEventModel} from '../../models/modal-event.model';
+import {toggleModal} from '../../animations/toggle-modal.animation';
 
 @Component({
   selector: 'modal',
@@ -13,22 +13,13 @@ import {ModalEventModel} from "../../models/modal-event.model";
   styleUrls: ['./modal.component.styl'],
   encapsulation: ViewEncapsulation.None,
   animations: [
-    trigger('showHideModal', [
-      state('void', style({opacity: 0})),
-      state('*', style({opacity: 1})),
-
-      transition('* => *', animate('{{ duration }}'))
-    ])
+    toggleModal()
   ]
 })
 export class ModalComponent implements OnInit, ModalModel, OnDestroy, AfterViewInit {
   public readonly onAnimation$: EventEmitter<ModalEventModel> = new EventEmitter();
 
-  private clickListener = (event) => {
-    if (!event.target.closest('.modal-content')) {
-      this.close();
-    }
-  };
+  private outsideClickListener;
 
   @Input() id: string;
 
@@ -57,9 +48,10 @@ export class ModalComponent implements OnInit, ModalModel, OnDestroy, AfterViewI
   public modalView = false;
 
   protected element;
-  protected contentElement;
 
-  constructor(protected modalsService: ModalsService, element: ElementRef) {
+  constructor(protected modalsService: ModalsService,
+              protected renderer: Renderer2,
+              element: ElementRef) {
     this.element = element.nativeElement;
   }
 
@@ -87,14 +79,19 @@ export class ModalComponent implements OnInit, ModalModel, OnDestroy, AfterViewI
   public close() {
     this.modalView = false;
 
-    document.removeEventListener('click', this.clickListener);
+    this.outsideClickListener && this.outsideClickListener();
+    this.outsideClickListener = null;
   }
 
   public open() {
     this.modalView = true;
 
     setTimeout(() => {
-      document.addEventListener('click', this.clickListener);
+      this.outsideClickListener = this.renderer.listen('document', 'click', (event) => {
+        if (!event.target.closest('.modal-content')) {
+          this.close();
+        }
+      });
     });
   }
 }
